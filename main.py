@@ -34,13 +34,10 @@ num = input("finally, input the number of particles: ")
 num = int(num)
 
 #calculating the overall intensity distribution
-"""
-values = ic.single_intensity(n, a, l, D)
+
+values = ic.double_intensity(n, a, l, D)
 intensity = values[1]
 x_vals = values[0]
-"""
-x_vals = np.linspace(-10,10,10000)
-intensity = simulation.diffract(x_vals)
 
 #determining where the particle should go
 x = list()
@@ -55,7 +52,7 @@ for i in range(0, num):
     if random.randint(0,10)%2 == 0:
         x.append(x_vals1[0])
     else:
-        x.append(x_vals1[0])
+        x.append(-1*x_vals1[0])
 
 points = dict()
 for i in x:
@@ -64,12 +61,7 @@ for i in x:
     else:
         points[i] = 1
 
-"""      
-for x,y in points.items():
-    print(x, y)
-"""
-
 plt.subplot(122)
 x = plt.bar(points.keys(), points.values())
-plt.axis([-10,10,0,max(points.values())])
+plt.axis([-5,5,0,max(points.values())])
 plt.show()
