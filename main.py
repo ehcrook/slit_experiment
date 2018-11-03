@@ -53,6 +53,7 @@ for x,y in points.items():
     print(x, y)
 """
 
+
 plt.subplot(122)
 x = plt.bar(points.keys(), points.values())
 plt.axis([-10,10,0,max(points.values())])
