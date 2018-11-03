@@ -62,6 +62,6 @@ for i in x:
         points[i] = 1
 
 plt.subplot(122)
-x = plt.bar(points.keys(), points.values())
+plt.scatter(points.keys(), points.values())
 plt.axis([-5,5,0,max(points.values())])
 plt.show()
