@@ -20,7 +20,7 @@ def make_dict(x):
     return points
         
 def step():
-    a = 6e-9
+    a = 6e-6
     l = 900e-9
     D = 1
     n = 10

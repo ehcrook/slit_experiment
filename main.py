@@ -14,25 +14,25 @@ import step_func as sf
 
 def run(command):
     if(command == "single"): 
-        a = input("enter a slit width (micro m): ")
-        a = float(a) * (10e-6)
+        a = input("enter a slit width (microns): ")
+        a = float(a) * (1e-6)
         D = input("enter a distance from the screen (m): ")
         D = float(D)   
     elif(command == "double"): 
-        a = input("enter a slit separation (10e-10 m): ") #for double slit
-        a = float(a) * (10e-10)
+        a = input("enter a slit separation (microns): ") #for double slit
+        a = float(a) * (1e-6)
         D = input("enter a distance from the screen (m): ")
         D = float(D)
     elif(command == "N"):
-        a = input("enter a slit separation (10e-10 m): ")
-        a = float(a) * (10e-10)        
+        a = input("enter a slit separation (1e-10 m): ")
+        a = float(a) * (1e-10)        
         D = input("enter a distance from the screen (m): ")
         D = float(D)
         n = input("enter number of slits: ")             
         n = int(n)
     elif(command == "square"):
         a = input("enter a side length (microns): ")
-        a = float(a) * (10e-6)        
+        a = float(a) * (1e-6)        
         D = input("enter a distance from the screen (m): ")
         D = float(D)   
     elif(command == "triangle"):
