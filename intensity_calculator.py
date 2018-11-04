@@ -4,6 +4,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import microscPSF as msPSF
+import inspect
 
 def double_intensity(a, l, D): 
     x = np.linspace(-10,10,10000)
@@ -47,54 +49,64 @@ def n_intensity(n, a, l, D):
 
     return [x,y]
 
+#equation for use with circular apertures
+def psfSlicePics(psf, sxy, sz, pixel_size):
+    ex = pixel_size * 0.5 * psf.shape[1]
+    ez = pixel_size * (0.5 * psf.shape[0])
+    fig = plt.figure(figsize = (12,4))
+    ax1 = fig.add_subplot(1,3,1)
+    ax1.imshow(np.sqrt(psf[sz,:,:]),
+           interpolation = 'none', 
+           extent = [-ex, ex, -ex, ex],
+           cmap = "gray")
+    ax1.set_title("PSF XY slice")
 
-"""
-def integrand(
-def triangle_intensity(n, a, l, D):
-    x = np.linspace(-10,10,10000)
-    y = list()
-    for val in x:
-"""
+    ax2 = fig.add_subplot(1,3,2)
+    ax2.imshow(np.sqrt(psf[:,:,sxy]),
+           interpolation = 'none',
+           extent = [-ex, ex, -ez, ez],
+           cmap = "gray")
+    ax2.set_title("PSF YZ slice")
 
-def circular_intensity_plot(waveLen, pixel_size = 0.05, pixelsXY = 80):
-    import inspect
-    import numpy
-    import matplotlib.pyplot as pyplot
-    import microscPSF.microscPSF as msPSF
+    ax3 = fig.add_subplot(1,3,3)
+    ax3.imshow(np.sqrt(psf[:,sxy,:]), 
+           interpolation = 'none',
+           extent = [-ex, ex, -ez, ez],
+           cmap = "gray")
+    ax3.set_title("PSF XZ slice")
+
+def circular_intensity_plot(waveLen, pixel_size, pixelsXY):
     mp = msPSF.m_params
     rv = np.arange(0.0, 6.01, pixel_size)
     zv = np.arange(-3.01, 3.01, pixel_size)
-    waveLen *= 1.E-3
     
-    
-    def psfSlicePics(psf, sxy, sz, pixel_size):
-        
-        ex = pixel_size * 0.5 * psf.shape[1]
-        ez = pixel_size * (0.5 * psf.shape[0])
-
-        fig = pyplot.figure(figsize = (12,4))
-        ax1 = fig.add_subplot(1,3,1)
-        ax1.imshow(numpy.sqrt(psf[sz,:,:]),
-               interpolation = 'none', 
-               extent = [-ex, ex, -ex, ex],
-               cmap = "gray")
-        ax1.set_title("PSF XY slice")
-
-        ax2 = fig.add_subplot(1,3,2)
-        ax2.imshow(numpy.sqrt(psf[:,:,sxy]),
-               interpolation = 'none',
-               extent = [-ex, ex, -ez, ez],
-               cmap = "gray")
-        ax2.set_title("PSF YZ slice")
-    
-        ax3 = fig.add_subplot(1,3,3)
-        ax3.imshow(numpy.sqrt(psf[:,sxy,:]), 
-               interpolation = 'none',
-               extent = [-ex, ex, -ez, ez],
-               cmap = "gray")
-        ax3.set_title("PSF XZ slice")
-
-    pyplot.show()
-    
-    psf_xyz = msPSF.gLXYZFocalScan(mp, pixel_size, pixelsXY, zv, normalize = False, wvl = waveLen)
+    psf_xyz = msPSF.gLXYZFocalScan(mp, zv, pixel_size, pixelsXY, normalize = False, wvl = waveLen)
     psfSlicePics(psf_xyz, 15, 30, pixel_size)
+    
+    plt.show()
+    
+#intensity calculation for a triangular aperture
+def triangle(a, l, D):
+    #3 dimensional intensity distribution
+    #point of triangles at (0,0), (a, a), (a,-a)
+    
+    x = np.linspace(0,a,10000)
+
+    xy = list()     #list of (x,y) coords that resulted in the z val
+    z = list()
+    
+    for kx in x:
+        for ky in range(-kx, kx, 20*kx):    #pick x values in shape of triangle
+            xy.append( (kx,ky) )
+            k = 2*math.pi/l
+            one = (2*a*math.exp(1j*k*D))/(1j*ky*z)
+            two = math.exp(-1j*(kx-ky)*a/2)
+            four = math.exp(-1j*(kx+ky)*a/2)
+            three = np.sinc((kx-ky)*a/(2*math.pi))
+            five = np.sinc((kx+ky)*a/(2*math.pi))        
+            z.append(one*(two*three-four*five))
+            
+    return [xy, z]
+
+if __name__ == "__main__":
+    circular_intensity_plot(900e-9,0.05,80)
