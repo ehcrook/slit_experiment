@@ -1,11 +1,10 @@
-#ifndef buckets_h_
-#define buckets_h_
-#include <vector>
+#ifndef TESTLIB_H
+#define TESTLIB_H
+
+#include <list>
+#include <iostream>
 using namespace std;
 
-class Buckets {
-    public:
-        vector<vector<float> > bucket(vector<float> intensity, vector<float> y);
-};
+list<list<float> > bucket(list<float> intensity, list<float> y);
 
 #endif

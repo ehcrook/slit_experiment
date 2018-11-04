@@ -1,35 +1,39 @@
 #include "buckets.h"
 #include <iostream>
-#include <vector>
+#include <list>
 #include <stdlib.h>
 #include <time.h>
 using namespace std;
 
-vector<vector<float> > Buckets::bucket(vector<float> intensity, vector<float> y)
+list<list<float> > bucket(list<float> intensity, list<float> y)
 {
-	vector<vector<float> > result;
+	list<list<float> > result;
 
 	// calculating the probabilities for each point in the distribution
 	float sum = 0;
-	for(unsigned int i = 0; i < intensity.size(); i++)
-		sum += intensity[i];
+	for(list<float>::iterator itr = intensity.begin(); itr != intensity.end(); itr++)
+		sum += *itr;
 	
-	vector<float> probabilities;
-	for(unsigned int i = 0; i < intensity.size(); i++)
-		probabilities.push_back((intensity[i]/sum)*100);
+	list<float> probabilities;
+	for(list<float>::iterator itr = intensity.begin(); itr != intensity.end(); itr++)
+		probabilities.push_back((*itr/sum)*100);
 
 	// making the probability buckets
-	vector<vector<float> > buckets;
-	vector<vector<float> > bucket_intensity;
-	vector<float> current_bucket;
-	vector<float> current_intensity;
+	list<list<float> > buckets;
+	list<list<float> > bucket_intensity;
+	list<float> current_bucket;
+	list<float> current_intensity;
 	float current_sum = 0;
 
-	for(unsigned int i = 0; i < probabilities.size(); i++)
+	list<float>::iterator itr1 = intensity.begin();
+	list<float>::iterator itr2 = probabilities.begin();
+	list<float>::iterator itr3 = y.begin();
+
+	for(; itr1 != intensity.end(); itr1++, itr2++, itr3++)
 	{
-		float prob = probabilities[i];
-		current_bucket.push_back(y[i]);
-		current_intensity.push_back(intensity[i]);
+		float prob = *itr2;
+		current_bucket.push_back(*itr3);
+		current_intensity.push_back(*itr1);
 		current_sum += prob;
 		if(1-current_sum < 0.01)
 		{
@@ -46,8 +50,15 @@ vector<vector<float> > Buckets::bucket(vector<float> intensity, vector<float> y)
 	// of finding the particle there
 	srand(time(NULL));
 	int num = rand() % buckets.size();
-	result.push_back(buckets[num]);
-	result.push_back(bucket_intensity[num]);
+	list<list<float> >::iterator ij = buckets.begin();
+	list<list<float> >::iterator ji = bucket_intensity.begin();
+	for(int i = 0; i < num; i++)
+	{
+		ij++;
+		ji++;
+	}
+	result.push_back(*ij);
+	result.push_back(*ji);
 
 	return result;
 }

@@ -16,14 +16,17 @@ l = float(l) * (10**-9)
 a = input("enter a slit width (micro m): ")
 a = float(a) * (10**-6)
 d = input("enter a slit separation (micro m): ")
-d = float(d) * (10**-6)
+d = float(d) * (10**-10)
 D = input("enter a distance from the screen (m): ")
 D = float(D)
+n = input("enter number of slits: ")
+n = int(n)
 num = input("finally, input the number of particles: ")
 num = int(num)
 
 #calculating the overall intensity distribution
 values = ic.double_intensity(a, l, D)
+##values = ic.n_intensity(n, d, l, D)
 intensity = values[1]
 x_vals = values[0]
 
@@ -50,7 +53,7 @@ for i in x:
         points[i] = 1
 
 plt.subplot(122)
-plt.scatter(points.keys(), points.values())
+plt.bar(points.keys(), points.values())
 plt.title("Experimental, {} particles".format(num)) 
-plt.axis([-5,5,0,max(points.values())])
+plt.axis([-n,n,0,max(points.values())])
 plt.show()
