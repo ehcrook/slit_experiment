@@ -53,7 +53,7 @@ def deltaFocus(mp, zd):
     return a*a*(mp["zd0"] - zd)/(2.0*mp["zd0"]*zd)
 
 
-def gLXYZFocalScan(mp, dxy = 1, xy_size = 1000, zv, normalize = True, pz = 0.0, wvl = 0.6, zd = None):
+def gLXYZFocalScan(mp, zv, dxy = 1, xy_size = 1000, normalize = True, pz = 0.0, wvl = 0.6, zd = None):
     """
     Calculate 3D G-L PSF. This is models the PSF you would measure by scanning the microscopes 
     focus.
