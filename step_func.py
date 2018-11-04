@@ -56,12 +56,12 @@ def step():
     
         for i in range(0, num):
             bucket_info = B.bucket(intensity1, x_vals1)
-            intensity11 = bucket_info[0]
-            x_vals11 = bucket_info[1]
+            intensity11 = bucket_info[1]
+            x_vals11 = bucket_info[0]
             while( len(x_vals11) > 1 ):   
                 bucket_info = B.bucket(intensity11, x_vals11)
-                intensity11 = bucket_info[0]
-                x_vals11 = bucket_info[1]
+                intensity11 = bucket_info[1]
+                x_vals11 = bucket_info[0]
             if random.randint(0,10)%2 == 0:
                 x1.append(x_vals11[0])
             else:
@@ -69,12 +69,12 @@ def step():
         
         for i in range(0, num):
             bucket_info = B.bucket(intensity2, x_vals2)
-            intensity12 = bucket_info[0]
-            x_vals12 = bucket_info[1]
+            intensity12 = bucket_info[1]
+            x_vals12 = bucket_info[0]
             while( len(x_vals12) > 1 ):   
                 bucket_info = B.bucket(intensity12, x_vals12)
-                intensity12 = bucket_info[0]
-                x_vals12 = bucket_info[1]
+                intensity12 = bucket_info[1]
+                x_vals12 = bucket_info[0]
             if random.randint(0,10)%2 == 0:
                 x2.append(x_vals12[0])
             else:
@@ -82,12 +82,12 @@ def step():
                 
         for i in range(0, num):
             bucket_info = B.bucket(intensityN, x_valsN)
-            intensity1N = bucket_info[0]
-            x_vals1N = bucket_info[1]
+            intensity1N = bucket_info[1]
+            x_vals1N = bucket_info[0]
             while( len(x_vals1N) > 1 ):   
                 bucket_info = B.bucket(intensity1N, x_vals1N)
-                intensity1N = bucket_info[0]
-                x_vals1N = bucket_info[1]
+                intensity1N = bucket_info[1]
+                x_vals1N = bucket_info[0]
             if random.randint(0,10)%2 == 0:
                 xN.append(x_vals1N[0])
             else:
@@ -95,12 +95,12 @@ def step():
                 
         for i in range(0, num):
             bucket_info = B.bucket(intensitySq, x_valsSq)
-            intensity1Sq = bucket_info[0]
-            x_vals1Sq = bucket_info[1]
+            intensity1Sq = bucket_info[1]
+            x_vals1Sq = bucket_info[0]
             while( len(x_vals1Sq) > 1 ):   
                 bucket_info = B.bucket(intensity1Sq, x_vals1Sq)
-                intensity1Sq = bucket_info[0]
-                x_vals1Sq = bucket_info[1]
+                intensity1Sq = bucket_info[1]
+                x_vals1Sq = bucket_info[0]
             if random.randint(0,10)%2 == 0:
                 xSq.append(x_vals1Sq[0])
             else:
