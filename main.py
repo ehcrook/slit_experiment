@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 from datetime import datetime
+from test import bucket_run
 
 plt.figure(figsize = (10,5), tight_layout = True)
 
@@ -33,11 +34,11 @@ x_vals = values[0]
 #determining where the particle should go
 x = list()
 for i in range(0, num):
-    bucket_info = B.bucket(intensity, x_vals)
+    bucket_info = bucket_run(intensity, x_vals)
     intensity1 = bucket_info[0]
     x_vals1 = bucket_info[1]
     while( len(x_vals1) > 1 ):
-        bucket_info = B.bucket(intensity1, x_vals1)
+        bucket_info = bucket_run(intensity1, x_vals1)
         intensity1 = bucket_info[0]
         x_vals1 = bucket_info[1]
     if random.randint(0,10)%2 == 0:

@@ -1,7 +1,7 @@
 from libcpp.list cimport list
 
 cdef extern from "buckets.h":
-    void bucket(list[float] &, list[float] &)
+    list[list[float]] bucket(list[float] &, list[float] &)
 
-def bucket_test(list[float] a, list[float] b):
-    bucket(a,b)
+def bucket_run(list[float] a, list[float] b):
+    return bucket(a,b)
