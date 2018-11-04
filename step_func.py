@@ -7,6 +7,8 @@ import square_intensity as sq
 import matplotlib.pyplot as plt
 import numpy as np
 import buckets as B
+import random
+from datetime import datetime
 
 def make_dict(x):
     points = dict()
@@ -52,32 +54,77 @@ def step():
     
         num = int(num)
     
-        i = 0
-        while i < num:
-            x1.append(B.call_bucket(values1,intensity1))
-            x2.append(B.call_bucket(values2,intensity2))
-            xN.append(B.call_bucket(valuesN,intensityN))
-            xSq.append(B.call_bucket(valuesSq,intensitySq))
-            
-    points1 = make_dict(x1)
-    points2 = make_dict(x2)
-    pointsN = make_dict(xN)
-    pointsSq = make_dict(xSq)
+        for i in range(0, num):
+            bucket_info = B.bucket(intensity1, x_vals1)
+            intensity11 = bucket_info[0]
+            x_vals11 = bucket_info[1]
+            while( len(x_vals11) > 1 ):   
+                bucket_info = B.bucket(intensity11, x_vals11)
+                intensity11 = bucket_info[0]
+                x_vals11 = bucket_info[1]
+            if random.randint(0,10)%2 == 0:
+                x1.append(x_vals11[0])
+            else:
+                x1.append(-1*x_vals11[0])       
         
-    plt.subplot(221)
-    plt.scatter(points1.keys(), points1.values())
-    plt.title("Single Slit") 
-    
-    plt.subplot(222)
-    plt.scatter(points2.keys(), points2.values())
-    plt.title("Double Slit") 
-    
-    plt.subplot(223)
-    plt.scatter(pointsN.keys(), pointsN.values())
-    plt.title("N-Slit") 
-    
-    plt.subplot(224)
-    plt.scatter(pointsSq.keys(), pointsSq.values())
-    plt.title("Square Slit") 
-    
-    plt.show()    
+        for i in range(0, num):
+            bucket_info = B.bucket(intensity2, x_vals2)
+            intensity12 = bucket_info[0]
+            x_vals12 = bucket_info[1]
+            while( len(x_vals12) > 1 ):   
+                bucket_info = B.bucket(intensity12, x_vals12)
+                intensity12 = bucket_info[0]
+                x_vals12 = bucket_info[1]
+            if random.randint(0,10)%2 == 0:
+                x2.append(x_vals12[0])
+            else:
+                x2.append(-1*x_vals12[0])
+                
+        for i in range(0, num):
+            bucket_info = B.bucket(intensityN, x_valsN)
+            intensity1N = bucket_info[0]
+            x_vals1N = bucket_info[1]
+            while( len(x_vals1N) > 1 ):   
+                bucket_info = B.bucket(intensity1N, x_vals1N)
+                intensity1N = bucket_info[0]
+                x_vals1N = bucket_info[1]
+            if random.randint(0,10)%2 == 0:
+                xN.append(x_vals1N[0])
+            else:
+                xN.append(-1*x_vals1N[0])   
+                
+        for i in range(0, num):
+            bucket_info = B.bucket(intensitySq, x_valsSq)
+            intensity1Sq = bucket_info[0]
+            x_vals1Sq = bucket_info[1]
+            while( len(x_vals1Sq) > 1 ):   
+                bucket_info = B.bucket(intensity1Sq, x_vals1Sq)
+                intensity1Sq = bucket_info[0]
+                x_vals1Sq = bucket_info[1]
+            if random.randint(0,10)%2 == 0:
+                xSq.append(x_vals1Sq[0])
+            else:
+                xSq.append(-1*x_vals1Sq[0])       
+        
+        points1 = make_dict(x1)
+        points2 = make_dict(x2)
+        pointsN = make_dict(xN)
+        pointsSq = make_dict(xSq)
+            
+        plt.subplot(221)
+        plt.scatter(points1.keys(), points1.values())
+        plt.title("Single Slit") 
+        
+        plt.subplot(222)
+        plt.scatter(points2.keys(), points2.values())
+        plt.title("Double Slit") 
+        
+        plt.subplot(223)
+        plt.scatter(pointsN.keys(), pointsN.values())
+        plt.title("N-Slit") 
+        
+        plt.subplot(224)
+        plt.scatter(pointsSq.keys(), pointsSq.values())
+        plt.title("Square Slit") 
+        
+        plt.show()    
