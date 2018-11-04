@@ -7,15 +7,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 from datetime import datetime
-import simulation
-
-"""
-import cppyy
-cppyy.include("buckets.h")
-cppyy.load_library("buckets")
-from cppyy.gbl import Buckets
-B = Buckets()
-"""
 
 plt.figure(figsize = (10,5), tight_layout = True)
 
@@ -32,7 +23,7 @@ num = input("finally, input the number of particles: ")
 num = int(num)
 
 #calculating the overall intensity distribution
-values = ic.double_intensity(num, a, l, D)
+values = ic.double_intensity(a, l, D)
 intensity = values[1]
 x_vals = values[0]
 

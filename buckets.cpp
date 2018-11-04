@@ -41,7 +41,9 @@ vector<vector<float> > Buckets::bucket(vector<float> intensity, vector<float> y)
 		}
 	}
 
-	// selecting a particular bucket
+	// selecting a particular bucket at random
+	// as they should have the same probability
+	// of finding the particle there
 	srand(time(NULL));
 	int num = rand() % buckets.size();
 	result.push_back(buckets[num]);

@@ -3,10 +3,9 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as p
 import math
 
-def double_intensity(n, a, l, D): 
+def double_intensity(a, l, D): 
     x = np.linspace(-10,10,10000)
     y = list()
     for val in x:
@@ -21,7 +20,7 @@ def double_intensity(n, a, l, D):
     plt.plot(x,y)
     return [x,y]
     
-def single_intensity(n, a, l, D):
+def single_intensity(a, l, D):
     x = np.linspace(-10,10,10000)
     y = list()
     for val in x:
@@ -34,3 +33,25 @@ def single_intensity(n, a, l, D):
     plt.plot(x,y)
     
     return [x,y]
+
+def n_intensity(n, a, l, D):
+    x = np.linspace(-10,10,10000)
+    y = list()
+    for val in x:
+        stuff = 2*math.pi*a*(1/l)*val*(1/D)
+        i = 1-math.cos(stuff*n)
+        i = i / (1-math.cos(stuff))
+        y.append(i)
+    plt.subplot(121)
+    plt.plot(x,y)
+
+    return [x,y]
+
+
+"""
+def integrand(
+def triangle_intensity(n, a, l, D):
+    x = np.linspace(-10,10,10000)
+    y = list()
+    for val in x:
+"""
