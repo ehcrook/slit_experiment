@@ -9,6 +9,7 @@ import random
 from datetime import datetime
 import square_intensity as sq
 import triangle_intensity as tr
+import circular_intensity as cc
 
 #opening message
 print("Running options: single (Single Slit), double (Double Slit), N (N Slits),",
@@ -69,7 +70,7 @@ while(command != "stop"):
     elif(command == "N"):
         values = ic.n_intensity(n,a,l,D)
     elif(command == "circle"):
-        values = ic.circular_intensity(l)
+        values = cc.circular_intensity(l)
     elif(command == "square"):
         values = sq.square_intensity(a,l,D)
     elif(command == "triangle"):
