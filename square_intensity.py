@@ -19,7 +19,7 @@ def square_intensity(a, l, D):
     
     plt.subplot(121)
     plt.title("Square: Theoretical")
-    plt.plot(x,y)
+    #plt.plot(x,y)
     return[x, y]
 
 
