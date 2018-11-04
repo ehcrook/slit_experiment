@@ -106,7 +106,7 @@ while(command != "stop"):
     
     T = list()
     for i in points.keys():
-        T.append((i+points[i])/2)
+        T.append(points[i])
     
     #feelin' plot plot plot
     plt.subplot(122)
