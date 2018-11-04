@@ -8,7 +8,7 @@ import numpy as np
 import random
 from datetime import datetime
 import square_intensity as sq
-import triangle as tr
+import triangle_intensity as tr
 
 #opening message
 print("Running options: single (Single Slit), double (Double Slit), N (N Slits),",
