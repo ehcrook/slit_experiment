@@ -12,8 +12,6 @@ def bucket(I, y):
     probabilities = list()
     for val in I:
         probabilities.append((val/s)*100)
-        
-    #print(probabilities)
     
     #making probability buckets
     buckets = list()
@@ -35,16 +33,14 @@ def bucket(I, y):
             current_bucket = list()
             current_intensity = list()
         x = x+1
-        
-    # print( "length of buckets: ", len(buckets) )
     
-    #selecting a bucket
+    #selecting a bucket randomly
+    #as each should have the same probability
     random.seed(datetime.now())
     num = random.randint(0,len(buckets))
     if(num == len(buckets)):
         num = 0
-    # print(num)
     bucket = buckets[num]
     intensity = bucket_intensity[num]
-    # print( "length of bucket: ", len(bucket) )
+
     return [bucket, intensity]
