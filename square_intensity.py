@@ -16,10 +16,10 @@ def square_intensity(a, l, D):
         k = ((math.sin(stuff_y)) / (stuff_y))**2
         i = j * k
         y.append(i)
-
-    plt.plot(x, y)
+    
+    plt.subplot(121)
     plt.title("Square: Theoretical")
-    plt.show()
+    plt.plot(x,y)
     return[x, y]
 
 

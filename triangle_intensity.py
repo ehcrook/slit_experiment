@@ -1,3 +1,8 @@
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+import math
+
 def triangle_intensity(a, l, D):
     #3 dimensional intensity distribution
     #point of triangles at (0,0), (a, a), (a,-a)
@@ -20,24 +25,26 @@ def triangle_intensity(a, l, D):
             three = np.sinc((kx-ky)*a/(2*math.pi))
             five = np.sinc((kx+ky)*a/(2*math.pi))   
             """
-            one = (2*a*math.exp(k*D))/(ky*D)
+            #one = (2*a*math.exp(k*D))/(ky*D)
             two = math.exp(-1*(kx-ky)*a/2)
             four = math.exp(-1*(kx+ky)*a/2)
             three = np.sinc((kx-ky)*a/(2*math.pi))
-            five = np.sinc((kx+ky)*a/(2*math.pi))        
-            z.append(one*(two*three-four*five))
-            
+            five = np.sinc((kx+ky)*a/(2*math.pi))  
+            # took out "one*" from z.append
+            z.append((two*three-four*five))
+        """    
     print(X)
     print(Y)
     print(z)
-    
+    """
     # A 3D PLOT WOULD BE NICE
-    plt.subplot(121, projection='3d')
+    fig = plt.figure()
+    ax = fig.add_subplot(121, projection='3d')
     plt.title("Triangle: Theoretical")
     plt.scatter(X, Y, z, c='r', marker='o')  
             
     return [(X,Y), z]
 
 if __name__ == "__main__":
-    triangle(5e-6,900e-9,1)
+    triangle_intensity(5e-6,900e-9,1)
     plt.show()

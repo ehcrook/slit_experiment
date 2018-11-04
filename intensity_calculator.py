@@ -15,7 +15,7 @@ def double_intensity(a, l, D):
         i = i/(stuff**2)
         cos = math.cos(stuff)**2
         i = i*cos
-        y.append(i)    
+        y.append(i)
     
     #add to output plot
     plt.subplot(121)
