@@ -7,58 +7,107 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 from datetime import datetime
-from test import bucket_run
+import square_intensity as sq
+import triangle as tr
 
-plt.figure(figsize = (10,5), tight_layout = True)
+#opening message
+print("Running options: single (Single Slit), double (Double Slit), N (N Slits),",
+      "circle (Circular Aperture), square (Square Aperture), triangle (Triangle Aperture).\n",
+      "Enter 'step' to run the step by step simulation. Enter 'stop' to end.")
+command = input("Enter command: ")
 
-#user inputs
-l = input("enter a wavelength (nm): ")
-l = float(l) * (10**-9)
-a = input("enter a slit width (micro m): ")      #for single slit
-a = float(a) * (10**-6)
-d = input("enter a slit separation (micro m): ") #for double slit
-d = float(d) * (10**-10)
-D = input("enter a distance from the screen (m): ")
-D = float(D)
-n = input("enter number of slits: ")             #for n slit
-n = int(n)
-num = input("finally, input the number of particles: ")
-num = int(num)
+while(command != "stop"):
+    if(command == "single"): 
+        a = input("enter a slit width (micro m): ")
+        a = float(a) * (10e-6)
+        D = input("enter a distance from the screen (m): ")
+        D = float(D)   
+    elif(command == "double"): 
+        a = input("enter a slit separation (10e-10 m): ") #for double slit
+        a = float(d) * (10e-10)
+        D = input("enter a distance from the screen (m): ")
+        D = float(D)
+    elif(command == "N"):
+        a = input("enter a slit separation (10e-10 m): ")
+        a = float(d) * (10e-10)        
+        D = input("enter a distance from the screen (m): ")
+        D = float(D)
+        n = input("enter number of slits: ")             
+        n = int(n)
+    elif(command == "square"):
+        a = input("enter a side length (microns): ")
+        a = float(d) * (10e-6)        
+        D = input("enter a distance from the screen (m): ")
+        D = float(D)   
+    elif(command == "triangle"):
+        a = input("enter height of triangle (microns): ")
+        a = float(d) * (10e-6)        
+        D = input("enter a distance from the screen (m): ")
+        D = float(D)         
+    elif(command == "step"):
+        continue        #probably will just call a func in a diff file before continuing
+        
+    #circle not included as an elif statement because it only needs wavelength paramter (like all others)
+    else:
+        print("Command not understood. Try again.")
+        command = input("Enter a command: ")
+        continue
 
-#calculating the overall intensity distribution
-values = ic.double_intensity(a, l, D)
-##values = ic.n_intensity(n, d, l, D)
-intensity = values[1]   #entire intensity distribution
-x_vals = values[0]      #set of all x values for the distribution
+    plt.figure(figsize = (10,5), tight_layout = True)
 
-#determining where the particle should go
-x = list()
-for i in range(0, num):
-    bucket_info = B.bucket(intensity, x_vals)
-    ##bucket_info = bucket_run(intensity, x_vals) #break entire intensity into buckets
-    intensity1 = bucket_info[0]     #these are named 1 so intensity and x_vals don't get overwritten
-    x_vals1 = bucket_info[1]
-    while( len(x_vals1) > 1 ):      #break buckets into buckets until only 1 thing in it
-        ##bucket_info = bucket_run(intensity1, x_vals1)
+    #user inputs needed for any of the types of slit experiments
+    l = input("enter a wavelength (nm): ")
+    l = float(l) * (10e-9)    
+    num = input("input the number of particles: ")
+    num = int(num)
+
+    #calculating the overall intensity distribution
+    if(command == "single"):
+        values = ic.single_intensity(a,l,D)
+    elif(command == "double"):
+        values = ic.double_intensity(a, l, D)
+    elif(command == "N"):
+        values = ic.n_intensity(n,a,l,D)
+    elif(command == "circle"):
+        values = ic.circular_intensity(l)
+    elif(command == "square"):
+        values = sq.square_intensity(a,l,D)
+    elif(command == "triangle"):
+        values = tr.triangle_intensity(a,l,D)
+                        
+    intensity = values[1]   #entire intensity distribution
+    x_vals = values[0]      #set of all x values for the distribution
+    
+    #determining where the particle should go
+    x = list()
+    for i in range(0, num):
         bucket_info = B.bucket(intensity, x_vals)
-        intensity1 = bucket_info[0]
+        ##bucket_info = bucket_run(intensity, x_vals) #break entire intensity into buckets
+        intensity1 = bucket_info[0]     #these are named 1 so intensity and x_vals don't get overwritten
         x_vals1 = bucket_info[1]
-    if random.randint(0,10)%2 == 0: #because for some reason otherwise they're only negative
-        x.append(x_vals1[0])
-    else:
-        x.append(-1*x_vals1[0])
-
-#make a histogram based on how many particles end up at each x value
-points = dict()
-for i in x:
-    if i in points:
-        points[i] += 1
-    else:
-        points[i] = 1
-
-#feelin' plot plot plot
-plt.subplot(122)
-plt.bar(points.keys(), points.values())
-plt.title("Experimental, {} particles".format(num)) 
-plt.axis([-n,n,0,max(points.values())])
-plt.show()
+        while( len(x_vals1) > 1 ):      #break buckets into buckets until only 1 thing in it
+            ##bucket_info = bucket_run(intensity1, x_vals1)
+            bucket_info = B.bucket(intensity, x_vals)
+            intensity1 = bucket_info[0]
+            x_vals1 = bucket_info[1]
+        if random.randint(0,10)%2 == 0: #because for some reason otherwise they're only negative
+            x.append(x_vals1[0])
+        else:
+            x.append(-1*x_vals1[0])
+    
+    #make a histogram based on how many particles end up at each x value
+    points = dict()
+    for i in x:
+        if i in points:
+            points[i] += 1
+        else:
+            points[i] = 1
+    
+    #feelin' plot plot plot
+    plt.subplot(122)
+    plt.scatter(points.keys(), points.values())
+    plt.title("Experimental, {} particles".format(num)) 
+    plt.axis([-10,10,0,max(points.values())])
+    plt.show()
+    
+    command = input("Enter a command: ")
