@@ -110,21 +110,37 @@ def step():
         points2 = make_dict(x2)
         pointsN = make_dict(xN)
         pointsSq = make_dict(xSq)
+        
+        T = list()
+        for i in points1.keys():
+            T.append(points1[i])        
             
         plt.subplot(221)
-        plt.scatter(points1.keys(), points1.values())
+        plt.scatter(points1.keys(), points1.values(), c=T)
         plt.title("Single Slit") 
         
+        T = list()
+        for i in points2.keys():
+            T.append(points2[i])        
+        
         plt.subplot(222)
-        plt.scatter(points2.keys(), points2.values())
+        plt.scatter(points2.keys(), points2.values(), c=T)
         plt.title("Double Slit") 
         
+        T = list()
+        for i in pointsN.keys():
+            T.append(pointsN[i])        
+        
         plt.subplot(223)
-        plt.scatter(pointsN.keys(), pointsN.values())
+        plt.scatter(pointsN.keys(), pointsN.values(), c=T)
         plt.title("N-Slit") 
         
+        T = list()
+        for i in pointsSq.keys():
+            T.append(pointsSq[i])        
+        
         plt.subplot(224)
-        plt.scatter(pointsSq.keys(), pointsSq.values())
+        plt.scatter(pointsSq.keys(), pointsSq.values(), c=T)
         plt.title("Square Slit") 
         
         plt.show()    

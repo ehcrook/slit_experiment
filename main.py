@@ -99,7 +99,7 @@ def run(command):
     
     #feelin' plot plot plot
     plt.subplot(122)
-    plt.scatter(points.keys(), points.values())
+    plt.scatter(points.keys(), points.values(), c=T)
     plt.title("Experimental, {} particles".format(num)) 
     plt.axis([-20,20,0,max(points.values())])
     plt.show()    
