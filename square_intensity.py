@@ -41,7 +41,7 @@ def input_():
     #num = input("finally, input the number of particles: ")
     #num = int(num)
 
-    square_intensity(a, N, D, l)
+    square_intensity(a, l, D)
 
 
 if __name__ == "__main__":
