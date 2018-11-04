@@ -2,9 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
+#x: xscreen: starting position on screen(m)
+#y: yscreen: starting postition on screen(m)
+
 def square_intensity(a, N, D, l):
-    x = np.linspace(-10, 10, 10000)
-    y = np.linspace(-20, 20, 10000)
+    x = np.linspace(-10, 10, 10000) ##??
+    y = np.linspace(-10, 10, 10000) ##??
     y = list()
     for val in x:
         stuff_x = ((2*np.pi*a*val) / (l*D))
