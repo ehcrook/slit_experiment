@@ -25,24 +25,24 @@ while(command != "stop"):
         D = float(D)   
     elif(command == "double"): 
         a = input("enter a slit separation (10e-10 m): ") #for double slit
-        a = float(d) * (10e-10)
+        a = float(a) * (10e-10)
         D = input("enter a distance from the screen (m): ")
         D = float(D)
     elif(command == "N"):
         a = input("enter a slit separation (10e-10 m): ")
-        a = float(d) * (10e-10)        
+        a = float(a) * (10e-10)        
         D = input("enter a distance from the screen (m): ")
         D = float(D)
         n = input("enter number of slits: ")             
         n = int(n)
     elif(command == "square"):
         a = input("enter a side length (microns): ")
-        a = float(d) * (10e-6)        
+        a = float(a) * (10e-6)        
         D = input("enter a distance from the screen (m): ")
         D = float(D)   
     elif(command == "triangle"):
         a = input("enter height of triangle (microns): ")
-        a = float(d) * (10e-6)        
+        a = float(a) * (10e-6)        
         D = input("enter a distance from the screen (m): ")
         D = float(D)         
     elif(command == "step"):
@@ -88,7 +88,7 @@ while(command != "stop"):
         x_vals1 = bucket_info[1]
         while( len(x_vals1) > 1 ):      #break buckets into buckets until only 1 thing in it
             ##bucket_info = bucket_run(intensity1, x_vals1)
-            bucket_info = B.bucket(intensity, x_vals)
+            bucket_info = B.bucket(intensity1, x_vals1)
             intensity1 = bucket_info[0]
             x_vals1 = bucket_info[1]
         if random.randint(0,10)%2 == 0: #because for some reason otherwise they're only negative

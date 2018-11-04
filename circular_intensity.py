@@ -1,7 +1,7 @@
 import inspect
 import numpy as np
 import matplotlib.pyplot as plt
-import microscPSF msPSF
+import microscPSF as msPSF
 from mpl_toolkits.mplot3d import Axes3D
 
 """
