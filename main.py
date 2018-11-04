@@ -34,11 +34,13 @@ x_vals = values[0]      #set of all x values for the distribution
 #determining where the particle should go
 x = list()
 for i in range(0, num):
-    bucket_info = bucket_run(intensity, x_vals) #break entire intensity into buckets
+    bucket_info = B.bucket(intensity, x_vals)
+    ##bucket_info = bucket_run(intensity, x_vals) #break entire intensity into buckets
     intensity1 = bucket_info[0]     #these are named 1 so intensity and x_vals don't get overwritten
     x_vals1 = bucket_info[1]
     while( len(x_vals1) > 1 ):      #break buckets into buckets until only 1 thing in it
-        bucket_info = bucket_run(intensity1, x_vals1)
+        ##bucket_info = bucket_run(intensity1, x_vals1)
+        bucket_info = B.bucket(intensity, x_vals)
         intensity1 = bucket_info[0]
         x_vals1 = bucket_info[1]
     if random.randint(0,10)%2 == 0: #because for some reason otherwise they're only negative

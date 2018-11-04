@@ -63,7 +63,6 @@ def circular_intensity_plot(waveLen, pixel_size = 0.05, pixelsXY = 80):
     zv = np.arange(-3.01, 3.01, pixel_size)
     waveLen *= 1.E-3
     
-    
     def psfSlicePics(psf, sxy, sz, pixel_size):
         
         ex = pixel_size * 0.5 * psf.shape[1]
