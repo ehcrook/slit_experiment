@@ -92,7 +92,11 @@ def run(command):
             points[i] += 1
         else:
             points[i] = 1   
-            
+    
+    T = list()
+    for i in points.keys():
+        T.append(points[i])
+    
     #feelin' plot plot plot
     plt.subplot(122)
     plt.scatter(points.keys(), points.values())
