@@ -10,7 +10,9 @@ def circular_intensity(wvl, pupil_radius, pixel_scale_par = 0.009):
         
     osys = poppy.OpticalSystem()
     osys.add_pupil( poppy.CircularAperture(radius = pupil_radius))    # pupil radius in meters
-    planeCor = pupil_radius * 4 # This line will let us change coordinates of the plane according to the pupil radius to better represent the diffraction pattern
+    planeCor = pupil_radius  # This line will let us change coordinates of the plane according to the pupil radius to better represent the diffraction pattern
+    if pupil_radius <= 0.49:
+        planeCor = pupil_radius * 10
     osys.add_detector(pixelscale=pixel_scale_par, fov_arcsec=planeCor)  # image plane coordinates in arcseconds
 
     psf = osys.calc_psf(wvl)                            # wavelength in meters
