@@ -24,7 +24,7 @@ def run(command):
         D = float(D)
     elif(command == "N"):
         a = input("enter a slit separation (1e-10 m): ")
-        a = float(a) * (1e-10)        
+        a = float(a) * (1e-7)        
         D = input("enter a distance from the screen (m): ")
         D = float(D)
         n = input("enter number of slits: ")             
