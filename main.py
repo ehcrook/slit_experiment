@@ -8,7 +8,6 @@ import numpy as np
 import random
 from datetime import datetime
 import square_intensity as sq
-import triangle_intensity as tr
 #import circular_intensity as cc
 import step_func as sf
 
@@ -34,12 +33,7 @@ def run(command):
         a = input("enter a side length (microns): ")
         a = float(a) * (1e-6)        
         D = input("enter a distance from the screen (m): ")
-        D = float(D)   
-    elif(command == "triangle"):
-        a = input("enter height of triangle (microns): ")
-        a = float(a) * (10e-6)        
-        D = input("enter a distance from the screen (m): ")
-        D = float(D)         
+        D = float(D)      
     #circle not included as an elif statement because it only needs wavelength paramter (like all others)
     else:
         print("Command not understood. Try again.")
@@ -64,8 +58,6 @@ def run(command):
     #    values = cc.circular_intensity(l)
     elif(command == "square"):
         values = sq.square_intensity(a,l,D)
-    elif(command == "triangle"):
-        values = tr.triangle_intensity(a,l,D)
                         
     intensity = values[1]   #entire intensity distribution
     x_vals = values[0]      #set of all x values for the distribution
