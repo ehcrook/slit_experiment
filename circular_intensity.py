@@ -1,87 +1,17 @@
-import inspect
-import numpy as np
-import matplotlib.pyplot as plt
-import microscPSF as msPSF
-from mpl_toolkits.mplot3d import Axes3D
+import poppy
 
-"""
-# UNEDITED CIRCULAR APERTURE
-def circular_intensity_plot(waveLen, pixel_size = 0.05, pixelsXY = 80):
-    import inspect
-    import numpy
-    import matplotlib.plt as plt
-    import microscPSF.microscPSF as msPSF
-    mp = msPSF.m_params
-    rv = np.arange(0.0, 6.01, pixel_size)
-    zv = np.arange(-3.01, 3.01, pixel_size)
-    waveLen *= 1.E-3
-    
-    def psfSlicePics(psf, sxy, sz, pixel_size):
+
+
+def circular_intensity(wvl, pupil_radius, pixel_scale_par = 0.009):
+    """ Calculate and plot circular intensity
+        circular_intensity(wvl, pupil_radius, pixel_scale_par = 0.05)
+        wvl : wavelength in microns
+    """
         
-        ex = pixel_size * 0.5 * psf.shape[1]
-        ez = pixel_size * (0.5 * psf.shape[0])
+    osys = poppy.OpticalSystem()
+    osys.add_pupil( poppy.CircularAperture(radius = pupil_radius))    # pupil radius in meters
+    planeCor = pupil_radius * 4 # This line will let us change coordinates of the plane according to the pupil radius to better represent the diffraction pattern
+    osys.add_detector(pixelscale=pixel_scale_par, fov_arcsec=planeCor)  # image plane coordinates in arcseconds
 
-        fig = plt.figure(figsize = (12,4))
-        ax1 = fig.add_subplot(1,3,1)
-        ax1.imshow(numpy.sqrt(psf[sz,:,:]),
-               interpolation = 'none', 
-               extent = [-ex, ex, -ex, ex],
-               cmap = "gray")
-        ax1.set_title("PSF XY slice")
-
-        ax2 = fig.add_subplot(1,3,2)
-        ax2.imshow(numpy.sqrt(psf[:,:,sxy]),
-               interpolation = 'none',
-               extent = [-ex, ex, -ez, ez],
-               cmap = "gray")
-        ax2.set_title("PSF YZ slice")
-    
-        ax3 = fig.add_subplot(1,3,3)
-        ax3.imshow(numpy.sqrt(psf[:,sxy,:]), 
-               interpolation = 'none',
-               extent = [-ex, ex, -ez, ez],
-               cmap = "gray")
-        ax3.set_title("PSF XZ slice")
-
-    plt.show()
-    
-    psf_xyz = msPSF.gLXYZFocalScan(mp, pixel_size, pixelsXY, zv, normalize = False, wvl = waveLen)
-    psfSlicePics(psf_xyz, 15, 30, pixel_size)
-"""
-
-def psfSlicePics(psf, sxy, sz, pixel_size):
-    ex = pixel_size * 0.5 * psf.shape[1]
-    ez = pixel_size * (0.5 * psf.shape[0])
-
-    fig = plt.figure(figsize = (12,4))
-    ax1 = fig.add_subplot(1,3,1)
-    ax1.imshow(np.sqrt(psf[sz,:,:]),
-           interpolation = 'none', 
-           extent = [-ex, ex, -ex, ex],
-           cmap = "gray")
-    ax1.set_title("PSF XY slice")
-
-    ax2 = fig.add_subplot(1,3,2)
-    ax2.imshow(np.sqrt(psf[:,:,sxy]),
-           interpolation = 'none',
-           extent = [-ex, ex, -ez, ez],
-           cmap = "gray")
-    ax2.set_title("PSF YZ slice")
-
-    ax3 = fig.add_subplot(1,3,3)
-    ax3.imshow(np.sqrt(psf[:,sxy,:]), 
-           interpolation = 'none',
-           extent = [-ex, ex, -ez, ez],
-           cmap = "gray")
-    ax3.set_title("PSF XZ slice")
-
-def circular_intensity(waveLen, pixel_size = 0.05, pixelsXY = 80):
-    mp = msPSF.m_params
-    rv = np.arange(0.0, 6.01, pixel_size)
-    zv = np.arange(-3.01, 3.01, pixel_size)
-    #waveLen *= 1.E-3
-    
-    psf_xyz = msPSF.gLXYZFocalScan(mp, zv, pixel_size, pixelsXY, normalize = False, wvl = waveLen)
-    psfSlicePics(psf_xyz, 15, 30, pixel_size)
-    
-    plt.show()
+    psf = osys.calc_psf(wvl)                            # wavelength in meters
+    poppy.display_psf(psf, title='The Circular Aperture')
