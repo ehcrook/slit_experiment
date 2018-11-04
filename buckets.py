@@ -14,11 +14,11 @@ def bucket(I, y):
         probabilities.append((val/s)*100)
     
     #making probability buckets
-    buckets = list()
-    bucket_intensity = list()
+    buckets = list()            #master list of all buckets of same probability
+    bucket_intensity = list()   #corresponding list of intensities for each bucket
     current_bucket = list()
     current_intensity = list()
-    current_sum = 0
+    current_sum = 0             #to check for probability
     
     x = 0
     while x < len(probabilities):
@@ -26,6 +26,8 @@ def bucket(I, y):
         current_bucket.append(y[x])
         current_intensity.append(I[x])
         current_sum = current_sum + prob
+        
+        #if probability is pretty close to 1, make this a new bucket
         if (math.floor(current_sum) == 1) or (1-current_sum < 0.01):
             buckets.append(current_bucket)
             bucket_intensity.append(current_intensity)
