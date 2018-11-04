@@ -9,23 +9,18 @@ import random
 from datetime import datetime
 import square_intensity as sq
 import triangle_intensity as tr
-import circular_intensity as cc
+#import circular_intensity as cc
+import step_func as sf
 
-#opening message
-print("Running options: single (Single Slit), double (Double Slit), N (N Slits),",
-      "circle (Circular Aperture), square (Square Aperture), triangle (Triangle Aperture).\n",
-      "Enter 'step' to run the step by step simulation. Enter 'stop' to end.")
-command = input("Enter command: ")
-
-while(command != "stop"):
+def run(command):
     if(command == "single"): 
-        a = input("enter a slit width (microns): ")
-        a = float(a) * (1e-6)
+        a = input("enter a slit width (micro m): ")
+        a = float(a) * (10e-6)
         D = input("enter a distance from the screen (m): ")
         D = float(D)   
     elif(command == "double"): 
-        a = input("enter a slit separation (microns): ") #for double slit
-        a = float(a) * (1e-6)
+        a = input("enter a slit separation (10e-10 m): ") #for double slit
+        a = float(a) * (10e-10)
         D = input("enter a distance from the screen (m): ")
         D = float(D)
     elif(command == "N"):
@@ -37,22 +32,18 @@ while(command != "stop"):
         n = int(n)
     elif(command == "square"):
         a = input("enter a side length (microns): ")
-        a = float(a) * (1e-6)        
+        a = float(a) * (10e-6)        
         D = input("enter a distance from the screen (m): ")
         D = float(D)   
     elif(command == "triangle"):
         a = input("enter height of triangle (microns): ")
-        a = float(a) * (1e-6)        
+        a = float(a) * (10e-6)        
         D = input("enter a distance from the screen (m): ")
         D = float(D)         
-    elif(command == "step"):
-        continue        #probably will just call a func in a diff file before continuing
-        
     #circle not included as an elif statement because it only needs wavelength paramter (like all others)
     else:
         print("Command not understood. Try again.")
-        command = input("Enter a command: ")
-        continue
+        return False
 
     plt.figure(figsize = (10,5), tight_layout = True)
 
@@ -69,8 +60,8 @@ while(command != "stop"):
         values = ic.double_intensity(a, l, D)
     elif(command == "N"):
         values = ic.n_intensity(n,a,l,D)
-    elif(command == "circle"):
-        values = cc.circular_intensity(l)
+    #elif(command == "circle"):
+    #    values = cc.circular_intensity(l)
     elif(command == "square"):
         values = sq.square_intensity(a,l,D)
     elif(command == "triangle"):
@@ -83,14 +74,12 @@ while(command != "stop"):
     x = list()
     for i in range(0, num):
         bucket_info = B.bucket(intensity, x_vals)
-        ##bucket_info = bucket_run(intensity, x_vals) #break entire intensity into buckets
-        intensity1 = bucket_info[1]     #these are named 1 so intensity and x_vals don't get overwritten
-        x_vals1 = bucket_info[0]
+        intensity1 = bucket_info[0]     #these are named 1 so intensity and x_vals don't get overwritten
+        x_vals1 = bucket_info[1]
         while( len(x_vals1) > 1 ):      #break buckets into buckets until only 1 thing in it
-            ##bucket_info = bucket_run(intensity1, x_vals1)
             bucket_info = B.bucket(intensity1, x_vals1)
-            intensity1 = bucket_info[1]
-            x_vals1 = bucket_info[0]
+            intensity1 = bucket_info[0]
+            x_vals1 = bucket_info[1]
         if random.randint(0,10)%2 == 0: #because for some reason otherwise they're only negative
             x.append(x_vals1[0])
         else:
@@ -102,7 +91,7 @@ while(command != "stop"):
         if i in points:
             points[i] += 1
         else:
-            points[i] = 1
+            points[i] = 1   
     
     T = list()
     for i in points.keys():
@@ -110,9 +99,30 @@ while(command != "stop"):
     
     #feelin' plot plot plot
     plt.subplot(122)
-    plt.scatter(points.keys(), points.values(), c=T)
+    plt.scatter(points.keys(), points.values())
     plt.title("Experimental, {} particles".format(num)) 
-    plt.axis([-10,10,0,max(points.values())+.5])
-    plt.show()
+    plt.axis([-10,10,0,max(points.values())])
+    plt.show()    
+            
+    return True
+
+
+"""
+Actual main code starts here:
+"""
+
+#opening message
+print("Running options: single (Single Slit), double (Double Slit), N (N Slits),",
+      "circle (Circular Aperture), square (Square Aperture), triangle (Triangle Aperture).\n",
+      "Enter 'step' to run the step by step simulation. Enter 'stop' to end.")
+command = input("Enter command: ")
+
+while(command != "stop"):
+    
+    if(command == "step"):
+        sf.step()
+    
+    else:
+        run(command)
     
     command = input("Enter a command: ")

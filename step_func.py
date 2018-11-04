@@ -2,46 +2,129 @@
 #showing the particles being added one by one
 #basically a simulation of the slit experiment
 
-from tkinter import *
+import intensity_calculator as ic
+import square_intensity as sq
+import matplotlib.pyplot as plt
+import numpy as np
+import buckets as B
+import random
+from datetime import datetime
 
-class MyApp(object):    #coding a class makes coding for buttons easier
-    def __init__(self, parent):
-        self.parent = parent
-        self.main_frame = Frame(self.parent)        ##root is the parent of main_frame
-        self.main_frame.pack()               ##won't be visible unless packed
+def make_dict(x):
+    points = dict()
+    for i in x:
+        if i in points:
+            points[i] += 1
+        else:
+            points[i] = 1
+    return points
         
-        self.top_frame = Frame(self.main_frame)
-        self.top_frame.pack(side = TOP)
-        self.bottom_frame = Frame(self.main_frame)
-        self.bottom_frame.pack(side = BOTTOM)
-        
-        self.canvas = Canvas(self.top_frame, height = 400, width = 400)
-        self.canvas.pack()
-        
-        self.button1 = Button(self.bottom_frame, text = '+1 Particle', command = self.p1)
-        self.button1.pack(side = LEFT)
-        
-        self.button2 = Button(self.bottom_frame, text = '+100 Particles', command = self.-100)
-        self.button2.pack(side = RIGHT)
-        
-    def terminate(self):
-        self.parent.destroy() #may he rest in pieces
-        
-    def p1(self):
-        continue
-        
-    def p100(self):
-        x = 0
-        while(x < 100):
-            self.p1
-            x += 1
-
 def step():
-    continue
-
-
-if __name__ == "__main__":
-    root = Tk()
-    myapp = MyApp(root)
+    a = 6e-9
+    l = 900e-9
+    D = 1
+    n = 10
     
-    root.mainloop()
+    values1 = ic.single_intensity(a,l,D)
+    intensity1 = values1[1]
+    x_vals1 = values1[0]  
+    values2 = ic.double_intensity(a, l, D)
+    intensity2 = values2[1]
+    x_vals2 = values2[0]      
+    valuesN = ic.n_intensity(n,a,l,D)
+    intensityN = valuesN[1]
+    x_valsN = valuesN[0]      
+    valuesSq = sq.square_intensity(a,l,D)
+    intensitySq = valuesSq[1]
+    x_valsSq = valuesSq[0] 
+    
+    x1 = list()
+    x2 = list()
+    xN = list()
+    xSq = list()    
+    
+    plt.figure(figsize = (20,10), tight_layout = True)
+    
+    step = True
+    while(step == True):
+        num = input("How many particles? ('stop' to stop): ")
+        if(num == "stop"):
+            step = False
+            continue
+    
+        num = int(num)
+    
+        for i in range(0, num):
+            bucket_info = B.bucket(intensity1, x_vals1)
+            intensity11 = bucket_info[0]
+            x_vals11 = bucket_info[1]
+            while( len(x_vals11) > 1 ):   
+                bucket_info = B.bucket(intensity11, x_vals11)
+                intensity11 = bucket_info[0]
+                x_vals11 = bucket_info[1]
+            if random.randint(0,10)%2 == 0:
+                x1.append(x_vals11[0])
+            else:
+                x1.append(-1*x_vals11[0])       
+        
+        for i in range(0, num):
+            bucket_info = B.bucket(intensity2, x_vals2)
+            intensity12 = bucket_info[0]
+            x_vals12 = bucket_info[1]
+            while( len(x_vals12) > 1 ):   
+                bucket_info = B.bucket(intensity12, x_vals12)
+                intensity12 = bucket_info[0]
+                x_vals12 = bucket_info[1]
+            if random.randint(0,10)%2 == 0:
+                x2.append(x_vals12[0])
+            else:
+                x2.append(-1*x_vals12[0])
+                
+        for i in range(0, num):
+            bucket_info = B.bucket(intensityN, x_valsN)
+            intensity1N = bucket_info[0]
+            x_vals1N = bucket_info[1]
+            while( len(x_vals1N) > 1 ):   
+                bucket_info = B.bucket(intensity1N, x_vals1N)
+                intensity1N = bucket_info[0]
+                x_vals1N = bucket_info[1]
+            if random.randint(0,10)%2 == 0:
+                xN.append(x_vals1N[0])
+            else:
+                xN.append(-1*x_vals1N[0])   
+                
+        for i in range(0, num):
+            bucket_info = B.bucket(intensitySq, x_valsSq)
+            intensity1Sq = bucket_info[0]
+            x_vals1Sq = bucket_info[1]
+            while( len(x_vals1Sq) > 1 ):   
+                bucket_info = B.bucket(intensity1Sq, x_vals1Sq)
+                intensity1Sq = bucket_info[0]
+                x_vals1Sq = bucket_info[1]
+            if random.randint(0,10)%2 == 0:
+                xSq.append(x_vals1Sq[0])
+            else:
+                xSq.append(-1*x_vals1Sq[0])       
+        
+        points1 = make_dict(x1)
+        points2 = make_dict(x2)
+        pointsN = make_dict(xN)
+        pointsSq = make_dict(xSq)
+            
+        plt.subplot(221)
+        plt.scatter(points1.keys(), points1.values())
+        plt.title("Single Slit") 
+        
+        plt.subplot(222)
+        plt.scatter(points2.keys(), points2.values())
+        plt.title("Double Slit") 
+        
+        plt.subplot(223)
+        plt.scatter(pointsN.keys(), pointsN.values())
+        plt.title("N-Slit") 
+        
+        plt.subplot(224)
+        plt.scatter(pointsSq.keys(), pointsSq.values())
+        plt.title("Square Slit") 
+        
+        plt.show()    
